@@ -120,7 +120,7 @@ The `cla$$` prototype also has a couple of shortcuts. These will be available ev
     This object lets you access the `$uper`, or prototype of your class from within the class. Useful for overloading
     methods.
     
-2.  `cla$$` AKA '$$'
+2.  `cla$$` AKA `$$`
     This object accesses the class itself. You can also use the `constructor` property for this (but why do that?). This
     is great to easily access static methods and properties of the class.
     
