@@ -1,6 +1,15 @@
 // TEST
 
-var Person = cla$$.def(function () {
+try {
+  if (exports == null) throw "";
+  if (module.exports == null) throw "";
+  var cla$$ = require('../src/cla$$');
+} catch (e) {
+  var exports = window;
+  var module = {};
+}
+
+exports.Person = cla$$.def(function () {
 	this.init = function (config) {
 		config = config || {};
 		this.name = config.name;
@@ -18,14 +27,14 @@ var Person = cla$$.def(function () {
 	});
 });
 
-var jim = Person.make({
+exports.jim = exports.Person.make({
 	name: "Jim",
 	age: 23,
 	gender: "Male",
 	size: "Somewhat large"
 });
 
-var SuperHero = Person.extend(function () {
+exports.SuperHero = exports.Person.extend(function () {
 	this.init = function (config) {
 		//debugger;
 		config = config || {};
@@ -33,9 +42,9 @@ var SuperHero = Person.extend(function () {
 		this.powers = config.powers;
 		
 		for (var i=0, len=this.powers.length; i<len; i++) {
-			this._(function (power) {
+			(function (power) {
 				this[power] = function () { return this.name + " excersized " + (this.gender === "Male" ? "his" : "her") + " power of " + power + "."; };
-			})(this.powers[i]);
+			}).call(this, this.powers[i]);
 		}
 		
 		this.$.init._(arguments);
@@ -47,7 +56,7 @@ var SuperHero = Person.extend(function () {
 	};
 });
 
-var superMan = SuperHero.make({
+exports.superMan = exports.SuperHero.make({
 	name: "Clark Kent",
 	age: Infinity,
 	gender: "Male",
@@ -55,7 +64,20 @@ var superMan = SuperHero.make({
 	powers: ["lazerVision", "flight", "superStrength"]
 });
 
-var A = cla$$.define({
+exports.GreekGod = exports.SuperHero.extend(function () {
+  this.init = function (config) {
+    config = config || {};
+    config.age = Infinity;
+    
+    this.residence = "Mount Olympus";
+    
+    this.$.init._(arguments);
+  };
+});
+
+exports.zeuss = exports.GreekGod._new_({name: "Zeuss", size: "Quite large", gender: "Male", powers: ["lightning"]});
+
+exports.A = cla$$.define({
 	$uper: Array,
 	cla$$: function () {
 		cla$$.mixin(this, cla$$.Prototype);
@@ -81,8 +103,8 @@ var A = cla$$.define({
 	}
 });
 
-var Range = cla$$.def({
-	$uper: A,
+exports.Range = cla$$.def({
+	$uper: exports.A,
 	cla$$: function () {
 		this.init = function () {
 			var config = getInitConfig(arguments);
@@ -147,10 +169,11 @@ var Range = cla$$.def({
 });
 
 function range(from, to) {
-	return Range._new_(from, to);
+	return exports.Range._new_(from, to);
 }
+exports.range = range;
 
-var fib = Range.make({
+exports.fib = exports.Range.make({
   base: [0,1],
   process: function () { return this.at(-1) + this.at(-2) }
 });
