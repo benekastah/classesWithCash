@@ -153,6 +153,7 @@
 		// These are written to when a class is created.
 		this.$uper;
 		this.$;
+		this.cla$$;
 		this.$$;
 		
 		this._ = function (fn) {
