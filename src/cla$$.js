@@ -66,7 +66,6 @@ try {
 			}
 		}
 		
-		//Cla$$Prototype.configure(Cla$$CustomPrototype, proto);
 		return proto;
 	}
 	cla$$.Prototype = Cla$$Prototype;
