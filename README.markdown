@@ -45,7 +45,7 @@ This gives the class a base prototype that provides a couple of convenience meth
 
 1.  `this._`
     This method is really awesome for creating natural private methods in our classes. Javascript has this bad habit of not
-    binding `this` to private variables in a class. Here is an example of code that will only cause you worries:
+    binding `this` to private methods in a class (a private method's `this` is `window`. Yuck!) Here is an example of code that will only cause you worries:
   
     ```javascript
     function SomeClass() {
