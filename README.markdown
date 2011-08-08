@@ -66,7 +66,7 @@ This gives the class a base prototype that provides a couple of convenience meth
     snippet this way:
     
     ```javascript
-    var SomeClass = cla$$(function () {
+    var SomeClass = cla$$.define(function () {
       this.action = "Go crazy";
       
       this.method = function () {
