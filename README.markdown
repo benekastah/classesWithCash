@@ -214,7 +214,7 @@ var _1984 = cla$$.define({
 
 ```javascript
 var alrt = cla$$.define({
-  $uper: cla$$(window.alert),
+  $uper: cla$$(alert.bind(window)),
   cla$$: function () {
     this.msg = function (str) {
       this.$(str);
