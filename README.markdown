@@ -224,8 +224,10 @@ var alrt = cla$$.define({
 ```
 
 **Note**: You can actually extend objects without using the `cla$$` function. Using the `cla$$` function does a few convenient things to your object, though. 
+
 1.  It makes an empty object with your object as the prototype. This is so that when you add things to the prototype, you
     don't mess with your object directly.
+
 2.  It adds all the items from the `cla$$` prototype to the new object (skipping items of the same name on your original
     object). That way, you have all the convenience methods and shortcuts right off the bat.
 
