@@ -205,7 +205,7 @@ var SuperArray = cla$$.define({
 var _1984 = cla$$.define({
   $uper: cla$$({
     type: "book",
-    title: "1984"
+    title: "1984",
     author: "Wish I. Kudremember"
   }),
   cla$$: function () { ... }
