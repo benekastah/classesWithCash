@@ -163,6 +163,73 @@ var SuperPerson = Person.extend(function () {
 
 Ah, that's nicer!
 
+####Extending non-`cla$$`es
+
+You are not limited to `cla$$`es. You can extend anything you want, from native Javascript classes to objects to functions.
+
+#####Native Javascript Classes
+
+`javascript
+var SuperArray = cla$$.define({
+  $uper: Array,
+  cla$$: function () {
+    cla$$.mixin(this, cla$$.Prototype);
+
+    this.init = function () {
+      this.pushFromArray(arguments);
+    };
+
+    this.pushFromArray = function (arr) {
+      this.push.apply(this, arr);
+    };
+
+    this.at = function (i) {
+      var indx;
+      if (i < 0) indx = this.length + i;
+      else indx = i;
+      return this[indx];
+    };
+
+    this.last = function () {
+      return this.at(-1);
+    };
+  }
+});
+`
+
+#####Objects and Functions
+
+`cla$$` not only holds the `cla$$` prototype constructor and the `define` method, but it is also a functions that converts normal objects and functions into the sort of prototype that `cla$$` can use without funny things happening.
+`javascript
+var _1984 = cla$$.define({
+  $uper: cla$$({
+    type: "book",
+    title: "1984"
+    author: "Wish I. Kudremember"
+  }),
+  cla$$: function () { ... }
+});
+`
+
+`javascript
+var alrt = cla$$.define({
+  $uper: cla$$(window.alert),
+  cla$$: function () {
+    this.msg = function (str) {
+      this.$(str);
+    };
+  }
+})
+`
+
+**Note**: You can actually extend objects without using the `cla$$` function. Using the `cla$$` function does a few convenient things to your object, though. 
+1.  It makes an empty object with your object as the prototype. This is so that when you add things to the prototype, you
+    don't mess with your object directly.
+2.  It adds all the items from the `cla$$` prototype to the new object (skipping items of the same name on your original
+    object). That way, you have all the convenience methods and shortcuts right off the bat.
+
+**Another Note**: If you want to extend a function, then you really should use the `cla$$` function as described above. This is because `cla$$.define` will treat any function as a constructor function, unless it is first passed through `cla$$`. This will add the `cla$$` prototype methods directly to the function.
+
 ###Little extras
 
 *   Into Ruby, are you? Use `def` instead of `define`:
