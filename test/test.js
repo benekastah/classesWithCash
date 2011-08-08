@@ -1,15 +1,15 @@
 // TEST
 
-try {
-  if (exports == null) throw "";
-  if (module.exports == null) throw "";
+/*try {
+  if (window == null) throw "";
+  if (module.window == null) throw "";
   var cla$$ = require('../src/cla$$');
 } catch (e) {
-  var exports = window;
+  var window = window;
   var module = {};
-}
+}*/
 
-exports.Person = cla$$.def(function () {
+window.Person = cla$$.def(function () {
 	this.init = function (config) {
 		config = config || {};
 		this.name = config.name;
@@ -27,14 +27,14 @@ exports.Person = cla$$.def(function () {
 	});
 });
 
-exports.jim = exports.Person.make({
+window.jim = new window.Person({
 	name: "Jim",
 	age: 23,
 	gender: "Male",
 	size: "Somewhat large"
 });
 
-exports.SuperHero = exports.Person.extend(function () {
+window.SuperHero = window.Person.extend(function () {
 	this.init = function (config) {
 		//debugger;
 		config = config || {};
@@ -47,7 +47,7 @@ exports.SuperHero = exports.Person.extend(function () {
 			}).call(this, this.powers[i]);
 		}
 		
-		this.$.init._(arguments);
+		this.$uper(config);
 	};
 	
 	this.fight = function () {
@@ -56,7 +56,7 @@ exports.SuperHero = exports.Person.extend(function () {
 	};
 });
 
-exports.superMan = exports.SuperHero.make({
+window.superMan = new window.SuperHero({
 	name: "Clark Kent",
 	age: Infinity,
 	gender: "Male",
@@ -64,20 +64,20 @@ exports.superMan = exports.SuperHero.make({
 	powers: ["lazerVision", "flight", "superStrength"]
 });
 
-exports.GreekGod = exports.SuperHero.extend(function () {
+window.GreekGod = window.SuperHero.extend(function () {
   this.init = function (config) {
     config = config || {};
     config.age = Infinity;
     
     this.residence = "Mount Olympus";
     
-    this.$.init._(arguments);
+    this.$uper(config);
   };
 });
 
-exports.zeuss = exports.GreekGod._new_({name: "Zeuss", size: "Quite large", gender: "Male", powers: ["lightning"]});
+window.zeuss = new window.GreekGod({name: "Zeuss", size: "Quite large", gender: "Male", powers: ["lightning"]});
 
-exports.A = cla$$.define({
+window.A = cla$$.define({
 	$uper: Array,
 	cla$$: function () {
 		cla$$.mixin(this, cla$$.Prototype);
@@ -103,8 +103,8 @@ exports.A = cla$$.define({
 	}
 });
 
-exports.Range = cla$$.def({
-	$uper: exports.A,
+window.Range = cla$$.def({
+	$uper: window.A,
 	cla$$: function () {
 		this.init = function () {
 			var config = getInitConfig(arguments);
@@ -169,11 +169,11 @@ exports.Range = cla$$.def({
 });
 
 function range(from, to) {
-	return exports.Range._new_(from, to);
+	return new window.Range(from, to);
 }
-exports.range = range;
+window.range = range;
 
-exports.fib = exports.Range.make({
+window.fib = new window.Range({
   base: [0,1],
   process: function () { return this.at(-1) + this.at(-2) }
 });
@@ -187,13 +187,13 @@ var _1984 = cla$$.define({
   })
 });
 
-var firstCopyOf1984 = _1984.make();
+var firstCopyOf1984 = new _1984();
 
-var alrt = (cla$$.def({
-  $uper: cla$$(alert.bind(window)),
+var alrt = new (cla$$.def({
+  $uper: cla$$(function (msg) { alert(msg) }),
   cla$$: function () {
     this.msg = function (str) {
 	  this.$(str);
 	}
   }
-})).make();
+}))();
