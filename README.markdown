@@ -220,7 +220,7 @@ var alrt = cla$$.define({
       this.$(str);
     };
   }
-})
+});
 ```
 
 **Note**: You can actually extend objects without using the `cla$$` function. Using the `cla$$` function does a few convenient things to your object, though. 
