@@ -6,7 +6,7 @@ try {
   var module = {};
 }
 
-(function (exports) {
+(function () {
   
   var Cla$$Prototype;
   (function () {
@@ -29,15 +29,16 @@ try {
   		this.mixin = this.include = cla$$PrototypeMixin;
 	  }
 
-  	Cla$$Prototype.configure = function (cla$$, proto) {
-  	  proto.$$ = proto.cla$$ = proto.constructor;
-  	  proto.$ = proto.$uper = proto.constructor.prototype;
-  		proto.constructor = cla$$;
-  	};
+		Cla$$Prototype.configure = function (cla$$, proto) {
+		  proto.$$ = proto.cla$$ = proto.constructor;
+		  proto.$ = proto.$uper = proto.constructor.prototype;
+		  if (cla$$)
+		    proto.constructor = cla$$;
+		};
 
-  	function cla$$PrototypeMixin(Mixer, config) {
-  		return cla$$.mixin(this, Mixer, config);
-  	}
+		function cla$$PrototypeMixin(Mixer, config) {
+			return cla$$.mixin(this, Mixer, config);
+		}
 	})();
   
   var cla$$Prototype = new Cla$$Prototype();
@@ -48,10 +49,12 @@ try {
 		if (typeof item === "function") {
 			Cla$$Prototype.call(item);
 			proto = item;
+			proto.no_constructor = true;
 		} else {
 			function Cla$$CustomPrototype() {}
 			Cla$$CustomPrototype.prototype = item;
 			proto = new Cla$$CustomPrototype();
+			proto.constructor = Cla$$CustomPrototype;
 			
 			for (var prop in cla$$Prototype) {
 				var newer = item[prop];
@@ -63,6 +66,7 @@ try {
 			}
 		}
 		
+		//Cla$$Prototype.configure(Cla$$CustomPrototype, proto);
 		return proto;
 	}
 	cla$$.Prototype = Cla$$Prototype;
@@ -112,8 +116,10 @@ try {
 	};
 	
 	cla$$.def.getPrototype = function ($uper) {
-		if (typeof $uper === "function" && !this.isCla$$Prototype) {
-			proto = new $uper();
+		if (typeof $uper === "function"
+			&& !this.isCla$$Prototype
+			&& !$uper.no_constructor) {
+				proto = new $uper();
 		} else proto = $uper;
 		return proto;
 	};
@@ -155,7 +161,7 @@ try {
     this.$$ = this.cla$$ = cla$$;
 	}
 	
-})(exports);
+})();
 
 try {
   if (exports === window) {
