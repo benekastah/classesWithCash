@@ -169,7 +169,7 @@ You are not limited to `cla$$`es. You can extend anything you want, from native 
 
 #####Native Javascript Classes
 
-`javascript
+```javascript
 var SuperArray = cla$$.define({
   $uper: Array,
   cla$$: function () {
@@ -195,12 +195,12 @@ var SuperArray = cla$$.define({
     };
   }
 });
-`
+```
 
 #####Objects and Functions
 
 `cla$$` not only holds the `cla$$` prototype constructor and the `define` method, but it is also a functions that converts normal objects and functions into the sort of prototype that `cla$$` can use without funny things happening.
-`javascript
+```javascript
 var _1984 = cla$$.define({
   $uper: cla$$({
     type: "book",
@@ -209,9 +209,9 @@ var _1984 = cla$$.define({
   }),
   cla$$: function () { ... }
 });
-`
+```
 
-`javascript
+```javascript
 var alrt = cla$$.define({
   $uper: cla$$(window.alert),
   cla$$: function () {
@@ -220,7 +220,7 @@ var alrt = cla$$.define({
     };
   }
 })
-`
+```
 
 **Note**: You can actually extend objects without using the `cla$$` function. Using the `cla$$` function does a few convenient things to your object, though. 
 1.  It makes an empty object with your object as the prototype. This is so that when you add things to the prototype, you
