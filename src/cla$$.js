@@ -8,11 +8,15 @@ try {
 
 (function () {
   
-  var Cla$$Prototype;
+  var Cla$$Prototype,
+  // Clever way to find out if we can look at a function's contents
+  fnTest = /xyz/.test(function(){xyz;}) ? /\$uper\b/ : /.*/,
+  initialize = true;
+  
   (function () {
 	  Cla$$Prototype = function () {
 	    this.$$ = this.cla$$ = this.constructor;
-	    this.$ = this.$uper = this.constructor.prototype;
+	    this.$ = this.constructor.prototype;
 	    
 	    this.isCla$$Prototype = true;
 	    
@@ -69,40 +73,35 @@ try {
 		return proto;
 	}
 	cla$$.Prototype = Cla$$Prototype;
-	cla$$.mixin = function (target, Mixer, config) {
+	cla$$.mixin = cla$$.include = function (target, Mixer, config) {
 		config = config || {};
 		Mixer.call(target, config);
+	};
+	cla$$.config = {
+		require_new: true
 	};
 	module.exports = cla$$;
 	
 	cla$$.def = cla$$.define = function () {
 		var config = this.def.getConfig(arguments);
 		var $uper = config.$uper || cla$$Prototype,
-		cla$$ = config.cla$$ || function () {};
+		ctor = config.cla$$ || function () {};
 		var proto = this.def.getPrototype($uper);
 		
-		// Give cla$$ any static properties we want
-		cla$$Configure(cla$$, proto);
-		
-		// Add some helpful shortcuts to the prototype
-		Cla$$Prototype.configure(cla$$, proto);
-		
-		// Make an "_" shortcut for each function in the prototype (except the constructor)
-		// Just pass in the arguments array, and it will call `apply` for you.
-		for (var prop in proto) {
-			var item = proto[prop];
+		var Cla$$ = function () {
+			if (cla$$.config.require_new && this === window)
+				throw "You must use the keyword `new` when calling a constructor function."
 			
-			if (!proto.hasOwnProperty(prop)
-				|| typeof item !== "function"
-				|| prop === "$$"
-				|| prop === "cla$$"
-				|| prop === "constructor")
-				continue;
-			
-			makeUnderscoreShortcutMethod(proto, item);
+			return makeNew.call(Cla$$, ctor, arguments);
 		}
 		
-		return cla$$;
+		// Give cla$$ any static properties we want
+		cla$$Configure(Cla$$, ctor, proto);
+		
+		// Add some helpful shortcuts to the prototype
+		Cla$$Prototype.configure(Cla$$, proto);
+		
+		return Cla$$;
 	};
 	
 	cla$$.def.getConfig = function (args) {
@@ -115,49 +114,61 @@ try {
 	};
 	
 	cla$$.def.getPrototype = function ($uper) {
-		if (typeof $uper === "function"
-			&& !this.isCla$$Prototype
-			&& !$uper.no_constructor) {
-				proto = new $uper();
+		if (typeof $uper === "function" && !this.isCla$$Prototype && !$uper.no_constructor) {
+			initialize = false;
+			proto = new $uper();
+			initialize = true;
 		} else proto = $uper;
 		return proto;
 	};
 	
-	function cla$$Configure(newCla$$, proto) {
+	function cla$$Configure(newCla$$, ctor, proto) {
 		// Give cla$$ any static properties we want
 		newCla$$.isCla$$ = true;
-		newCla$$.prototype = proto;
-		
-		newCla$$._new_ = newCla$$.make = makeNew;
-		
-		newCla$$.extend = function () {
-			var config = cla$$.def.getConfig(arguments);
-			config.$uper = this;
-			return cla$$.def(config);
-		};
+		newCla$$.prototype = ctor.prototype = proto;
+		newCla$$.extend = extend;
 	}
 	
-	function makeUnderscoreShortcutMethod(proto, fn) {
-		if (fn._ == null) {
-			fn._ = function (args) {
-				fn.apply(proto, args);
-			};
-		}
+	function extend() {
+		var config = cla$$.def.getConfig(arguments);
+		config.$uper = this;
+		return cla$$.def(config);
 	}
 	
-	function makeNew() {
-		var ret = new this();
+	function makeNew(ctor, args) {
+		var ret = new ctor();
 		addShortcutsOnClassInit.call(ret, this.prototype, this);
+		add$uperMethods(ret);
 		
-		if (ret.isCla$$Prototype && typeof ret.init === "function")
-			ret.init.apply(ret, arguments);
+		if (initialize && ret.isCla$$Prototype && typeof ret.init === "function")
+			ret.init.apply(ret, args);
 		
 		return ret;
 	}
 	
+	function add$uperMethods(ownerObj) {
+		for (var prop in ownerObj) {
+			var fn = ownerObj[prop];
+			
+			if (!ownerObj.hasOwnProperty(prop)
+				|| !(typeof fn === "function" && fnTest.test(fn))
+				|| fn === ownerObj.constructor) continue;
+			
+			(function (fnName, fn) {
+				this[fnName] = function (args) {
+					var tmp = this.$uper;
+					this.$uper = ownerObj.$[fnName];
+					var ret = fn.apply(this, arguments);
+					this.$uper = tmp;
+					return ret;
+				};
+			}).call(ownerObj, prop, fn);
+		}
+	}
+	
 	function addShortcutsOnClassInit($uper, cla$$) {
-	  this.$ = this.$uper = $uper;
-    this.$$ = this.cla$$ = cla$$;
+	  this.$ = $uper;
+      this.$$ = this.cla$$ = cla$$;
 	}
 	
 })();
