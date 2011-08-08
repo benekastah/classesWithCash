@@ -101,7 +101,7 @@ This gives the class a base prototype that provides a couple of convenience meth
     });
     ```
     
-    Wonderful! You might be wondering how to make your own Mixers. Well, it's easy. They are just simple constructor
+    Wonderful! You might be wondering how to make your own `Mixer`s. Well, it's easy. They are just simple constructor
     functions, like this:
     
     ```javascript
@@ -112,7 +112,7 @@ This gives the class a base prototype that provides a couple of convenience meth
     }
     ```
     
-    You can pass a config object as the last argument to any of the three mixin/include functions.
+    You can pass a config object as the last argument to any of the three `mixin`/`include` functions.
     
 The `cla$$` prototype also has a couple of shortcuts. These will be available even if you don't have the `cla$$` prototype as part of your class because they are added when the class is created.
 
