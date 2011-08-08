@@ -200,6 +200,7 @@ var SuperArray = cla$$.define({
 #####Objects and Functions
 
 `cla$$` not only holds the `cla$$` prototype constructor and the `define` method, but it is also a functions that converts normal objects and functions into the sort of prototype that `cla$$` can use without funny things happening.
+
 ```javascript
 var _1984 = cla$$.define({
   $uper: cla$$({
