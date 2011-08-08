@@ -20,15 +20,15 @@ try {
 	    
 	    this.isCla$$Prototype = true;
 	    
-	    this._ = function (fn) {
-  			var ret;
-  			if (Function.prototype.bind)
-  				ret = fn.bind(this);
-  			else
-  				ret = function () { return fn.apply(this, arguments) };
+	this._ = function (fn) {
+		var ret;
+		if (Function.prototype.bind)
+			this._ = function (fn) { return fn.bind(this) };
+		else
+			this._ = function (fn) { return function () { return fn.apply(this, arguments) } };
 
-  			return ret;
-  		};
+		return this._(fn);
+	};
   		
   		this.mixin = this.include = cla$$PrototypeMixin;
 	  }
