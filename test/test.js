@@ -177,3 +177,23 @@ exports.fib = exports.Range.make({
   base: [0,1],
   process: function () { return this.at(-1) + this.at(-2) }
 });
+
+var book1984Proto;
+var _1984 = cla$$.define({
+  $uper: cla$$(book1984Proto = {
+    type: "book",
+    title: "1984",
+    author: "Wish I. Kudremember"
+  })
+});
+
+var firstCopyOf1984 = _1984.make();
+
+var alrt = (cla$$.def({
+  $uper: cla$$(alert.bind(window)),
+  cla$$: function () {
+    this.msg = function (str) {
+	  this.$(str);
+	}
+  }
+})).make();
