@@ -114,11 +114,12 @@ This gives the class a base prototype that provides a couple of convenience meth
     
     You can pass a config object as the last argument to any of the three `mixin`/`include` functions.
     
-The `cla$$` prototype also has a couple of shortcuts. These will be available even if you don't have the `cla$$` prototype as part of your class because they are added when the class is created.
+The `cla$$` prototype also has a couple of shortcuts. These will be available even if you don't have the `cla$$` prototype as part of your class because they are added to your prototype when the class is created.
 
 1.  `$uper` AKA `$`
     This object lets you access the `$uper`, or prototype of your class from within the class. Useful for overloading
-    methods.
+    methods. Notice in our first example we used `this.$uper.init._(arguments);` to call a method on the prototype that 
+    had been overridden by the current classes method. We could also have used `this.$.init._(arguments);` to equal effect!
     
 2.  `cla$$` AKA `$$`
     This object accesses the class itself. You can also use the `constructor` property for this (but why do that?). This
